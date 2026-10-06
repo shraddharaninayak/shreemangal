@@ -69,80 +69,101 @@ export default function ScrollVideoHero() {
     const section = sectionRef.current
     if (!video || !section) return
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+    // ── Video metadata ────────────────────────────────────────────────────────
     const onLoadedMetadata = () => {
       durationRef.current = video.duration
       video.currentTime = 0
     }
-
     video.addEventListener('loadedmetadata', onLoadedMetadata)
-    if (video.readyState >= 1 && video.duration > 0) {
-      onLoadedMetadata()
+    if (video.readyState >= 1 && video.duration > 0) onLoadedMetadata()
+
+    // ── Cached geometry — computed once, refreshed on resize ──────────────────
+    // Avoids getBoundingClientRect() (forced reflow) on every scroll event.
+    let heroTop = 0
+    let scrollable = 0
+    const cacheGeometry = () => {
+      heroTop = section.getBoundingClientRect().top + window.scrollY
+      scrollable = section.offsetHeight - window.innerHeight
     }
+    cacheGeometry()
 
     const calcProgress = () => {
-      const heroTop = section.getBoundingClientRect().top + window.scrollY
-      const scrollable = section.offsetHeight - window.innerHeight
       if (scrollable <= 0) return 0
-      const raw = (window.scrollY - heroTop) / scrollable
-      return Math.min(1, Math.max(0, raw))
+      return Math.min(1, Math.max(0, (window.scrollY - heroTop) / scrollable))
     }
 
+    // ── RAF scrub — starts on scroll, stops when settled ──────────────────────
+    // One pending RAF at most; guarded by rafScheduled flag.
+    let rafScheduled = false
+    let lastApplied = -1
+
+    const tick = () => {
+      rafScheduled = false
+      const duration = durationRef.current
+      if (duration <= 0) return
+
+      const p = targetProgressRef.current
+      const targetTime = p <= 0.001 ? 0 : p >= 0.999 ? duration : p * duration
+
+      if (isMobile) {
+        // Direct seek — iOS/Android touch inertia already provides smoothness.
+        // Skip write if delta < ~1 frame at 30 fps to avoid over-thrashing the
+        // video decoder with near-identical seeks.
+        if (Math.abs(targetTime - lastApplied) >= 1 / 30) {
+          video.currentTime = targetTime
+          lastApplied = targetTime
+        }
+        // RAF stops here; next scroll event will restart it.
+      } else {
+        // Desktop: lerp for extra smoothness — preserves original behaviour.
+        const diff = targetTime - video.currentTime
+        if (Math.abs(diff) < 0.001) {
+          if (video.currentTime !== targetTime) video.currentTime = targetTime
+          // Settled — let RAF stop.
+        } else {
+          const next = video.currentTime + diff * 0.5
+          if (Math.abs(next - lastApplied) > 0.01) {
+            video.currentTime = next
+            lastApplied = next
+          }
+          // Still converging — keep RAF running.
+          rafScheduled = true
+          rafRef.current = requestAnimationFrame(tick)
+        }
+      }
+    }
+
+    const scheduleRaf = () => {
+      if (!rafScheduled) {
+        rafScheduled = true
+        rafRef.current = requestAnimationFrame(tick)
+      }
+    }
+
+    // ── Scroll handler ────────────────────────────────────────────────────────
     const onScroll = () => {
       const progress = calcProgress()
-
-      // ── Video seek target (unchanged) ──────────────────────────────────────
       targetProgressRef.current = progress
 
-      // ── Text state (only triggers re-render when state boundary is crossed) ─
       const newIdx = resolveTextState(progress)
       if (newIdx !== textStateRef.current) {
         textStateRef.current = newIdx
         setTextStateIndex(newIdx)
       }
+
+      scheduleRaf()
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
-
-    // ── rAF video-scrub loop (unchanged) ──────────────────────────────────────
-    let lastTime = -1
-
-    const tick = () => {
-      const duration = durationRef.current
-      if (duration > 0) {
-        const progress = targetProgressRef.current
-        let targetTime
-
-        if (progress <= 0.001) {
-          targetTime = 0
-        } else if (progress >= 0.999) {
-          targetTime = duration
-        } else {
-          targetTime = progress * duration
-        }
-
-        const diff = targetTime - video.currentTime
-
-        if (Math.abs(diff) < 0.001) {
-          if (video.currentTime !== targetTime) {
-            video.currentTime = targetTime
-          }
-        } else {
-          const next = video.currentTime + diff * 0.5
-          if (Math.abs(next - lastTime) > 0.01) {
-            video.currentTime = next
-            lastTime = next
-          }
-        }
-      }
-
-      rafRef.current = requestAnimationFrame(tick)
-    }
-
-    rafRef.current = requestAnimationFrame(tick)
+    window.addEventListener('resize', cacheGeometry, { passive: true })
+    onScroll() // sync initial state on mount
 
     return () => {
       video.removeEventListener('loadedmetadata', onLoadedMetadata)
       window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', cacheGeometry)
       cancelAnimationFrame(rafRef.current)
     }
   }, [])
