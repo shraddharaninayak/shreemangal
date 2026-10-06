@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const EASE = [0.16, 1, 0.3, 1]
 
@@ -137,29 +138,52 @@ export default function AboutSection() {
             </motion.div>
           </div>
 
-          {/* Dual Small Supporting Text Blocks Toward Lower Right */}
-          <div className="about-notes-pair">
-            <motion.p
-              className="about-note-text"
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.85, ease: EASE, delay: 0.85 }}
-            >
-              Built around thoughtful planning, quality construction and comfortable
-              everyday living for families across Nashik.
-            </motion.p>
+          {/* Dual Small Supporting Text Blocks Toward Lower Right + Explore Button */}
+          <div className="about-right-col">
+            <div className="about-notes-pair">
+              <motion.p
+                className="about-note-text"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.85, ease: EASE, delay: 0.85 }}
+              >
+                Built around thoughtful planning, quality construction and comfortable
+                everyday living for families across Nashik.
+              </motion.p>
 
-            <motion.p
-              className="about-note-text"
-              initial={{ opacity: 0, y: 20 }}
+              <motion.p
+                className="about-note-text"
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.85, ease: EASE, delay: 0.95 }}
+              >
+                Creating residential and commercial spaces with a steadfast focus on
+                lasting architectural value, craftsmanship and trust.
+              </motion.p>
+            </div>
+
+            {/* Explore button placed below the description */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.85, ease: EASE, delay: 0.95 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 1.05 }}
             >
-              Creating residential and commercial spaces with a steadfast focus on
-              lasting architectural value, craftsmanship and trust.
-            </motion.p>
+              <Link to="/residences" className="about-explore-btn">
+                Explore
+                <svg
+                  className="about-explore-arrow"
+                  width="14" height="14" viewBox="0 0 14 14"
+                  fill="none" stroke="currentColor" strokeWidth="1.5"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg>
+              </Link>
+            </motion.div>
           </div>
         </div>
+
       </div>
     </section>
   )

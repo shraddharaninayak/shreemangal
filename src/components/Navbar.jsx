@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
 // ── Navigation config ─────────────────────────────────────────────────────────
@@ -9,11 +9,10 @@ const NAV_ITEMS = [
   {
     id: 'about',
     label: 'About',
-    href: '/about',
+    scrollTo: 'about', // clicking the label scrolls to #about on homepage
     children: [
-      { label: 'Our Story', href: '/about/story' },
-      { label: 'Our Team', href: '/about/team' },
-      { label: 'Residents', href: '/about/residents' },
+      { label: 'Our Story', href: '/our-story' },
+      { label: 'Residence', href: '/residences' },
     ],
   },
   {
@@ -21,10 +20,9 @@ const NAV_ITEMS = [
     label: 'Properties',
     href: '/properties',
     children: [
-      { label: 'Apartments', href: '/properties/apartments' },
-      { label: 'Available Properties', href: '/properties/availability' },
-      { label: 'Amenities', href: '/properties/amenities' },
-      { label: 'Neighborhood', href: '/properties/neighborhood' },
+      { label: 'Apartments & Amenities', href: '/apartment-amenities' },
+      { label: 'Availability', href: '/availability' },
+      { label: 'Neighborhood', href: '/neighborhood' },
     ],
   },
   {
@@ -49,8 +47,6 @@ const NAV_ITEMS = [
   },
   { id: 'contact', label: 'Contact Us', href: '/contact' },
 ]
-
-const TRANSITION = 'transition: color 0.35s ease, text-shadow 0.35s ease;'
 
 // ── Scroll hook ───────────────────────────────────────────────────────────────
 
@@ -210,7 +206,7 @@ function DesktopDropdown({ item, onClose }) {
 
 // ── Desktop nav item ──────────────────────────────────────────────────────────
 
-function DesktopNavItem({ item, activeId, setActiveId, scrolled }) {
+function DesktopNavItem({ item, activeId, setActiveId, scrolled, onScrollToSection }) {
   const wrapRef = useRef(null)
   const closeTimer = useRef(null)
   const hasChildren = Boolean(item.children?.length)
@@ -227,6 +223,15 @@ function DesktopNavItem({ item, activeId, setActiveId, scrolled }) {
 
   const handleBlur = (e) => {
     if (!wrapRef.current?.contains(e.relatedTarget)) setActiveId(null)
+  }
+
+  const handleClick = () => {
+    if (item.scrollTo) {
+      // Scroll to section instead of opening dropdown
+      onScrollToSection?.(item.scrollTo)
+    } else if (hasChildren) {
+      setActiveId(isOpen ? null : item.id)
+    }
   }
 
   // Text styling: white over hero, dark when scrolled. Active (open) = gold.
@@ -257,7 +262,7 @@ function DesktopNavItem({ item, activeId, setActiveId, scrolled }) {
         <button
           aria-haspopup="menu"
           aria-expanded={isOpen}
-          onClick={() => setActiveId(isOpen ? null : item.id)}
+          onClick={handleClick}
           className={sharedClass}
           style={sharedStyle}
         >
@@ -285,36 +290,57 @@ function DesktopNavItem({ item, activeId, setActiveId, scrolled }) {
 
 // ── Mobile accordion item ─────────────────────────────────────────────────────
 
-function MobileAccordionItem({ item, onClose }) {
+function MobileAccordionItem({ item, onClose, onScrollToSection }) {
   const [expanded, setExpanded] = useState(false)
   const hasChildren = Boolean(item.children?.length)
   const isHome = item.id === 'home'
+
+  const labelStyle = {
+    fontFamily: "'Playfair Display', Georgia, serif",
+    fontSize: 'clamp(20px, 5.4vw, 24px)',
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    color: '#FFFFFF',
+    fontWeight: 500,
+    textShadow: '0 1px 6px rgba(0,0,0,0.22)',
+  }
 
   return (
     <li className="list-none w-full border-b border-white/[0.22]">
       {hasChildren ? (
         <>
-          <button
-            type="button"
-            aria-expanded={expanded}
-            aria-controls={`mobile-sub-${item.id}`}
-            onClick={() => setExpanded((v) => !v)}
-            className="relative flex items-center justify-center w-full py-5 text-center transition-all duration-200 focus-visible:outline-none"
-            style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: 'clamp(20px, 5.4vw, 24px)',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#FFFFFF',
-              fontWeight: 500,
-              textShadow: '0 1px 6px rgba(0,0,0,0.22)',
-            }}
-          >
-            <span>{item.label}</span>
-            <span className="absolute right-2 sm:right-4 opacity-80">
+          {/* Split row: label area + chevron button */}
+          <div className="flex items-center w-full">
+            {/* Label — scrolls if scrollTo, else expands accordion */}
+            <button
+              type="button"
+              onClick={() => {
+                if (item.scrollTo) {
+                  onScrollToSection?.(item.scrollTo)
+                  onClose()
+                } else {
+                  setExpanded((v) => !v)
+                }
+              }}
+              className="flex-1 flex items-center justify-center py-5 text-center transition-all duration-200 focus-visible:outline-none"
+              style={labelStyle}
+            >
+              <span>{item.label}</span>
+            </button>
+
+            {/* Chevron — always toggles accordion */}
+            <button
+              type="button"
+              aria-expanded={expanded}
+              aria-controls={`mobile-sub-${item.id}`}
+              onClick={() => setExpanded((v) => !v)}
+              className="px-5 py-5 flex items-center justify-center focus-visible:outline-none"
+              aria-label={expanded ? `Collapse ${item.label} submenu` : `Expand ${item.label} submenu`}
+              style={{ color: 'rgba(255,255,255,0.75)' }}
+            >
               <ChevronIcon isOpen={expanded} />
-            </span>
-          </button>
+            </button>
+          </div>
 
           <AnimatePresence initial={false}>
             {expanded && (
@@ -369,7 +395,33 @@ function MobileAccordionItem({ item, onClose }) {
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
+  const [pendingScroll, setPendingScroll] = useState(null)
   const { hidden, scrolled } = useNavScroll()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  // When we navigate to '/' with a pending scroll target, execute the scroll
+  useEffect(() => {
+    if (pendingScroll && location.pathname === '/') {
+      const timer = setTimeout(() => {
+        const el = document.getElementById(pendingScroll)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+        setPendingScroll(null)
+      }, 120)
+      return () => clearTimeout(timer)
+    }
+  }, [pendingScroll, location.pathname])
+
+  const handleScrollToSection = useCallback((id) => {
+    if (location.pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      navigate('/')
+      setPendingScroll(id)
+    }
+    setActiveDropdown(null)
+    setMobileOpen(false)
+  }, [location.pathname, navigate])
 
   useEffect(() => {
     const handle = (e) => {
@@ -420,6 +472,7 @@ export default function Navbar() {
                   activeId={activeDropdown}
                   setActiveId={setActiveDropdown}
                   scrolled={false}
+                  onScrollToSection={handleScrollToSection}
                 />
               ))}
             </ul>
@@ -488,6 +541,7 @@ export default function Navbar() {
                     key={item.id}
                     item={item}
                     onClose={() => setMobileOpen(false)}
+                    onScrollToSection={handleScrollToSection}
                   />
                 ))}
               </ul>

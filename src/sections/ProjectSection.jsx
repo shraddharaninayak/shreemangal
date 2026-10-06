@@ -155,6 +155,29 @@ export default function ProjectSection() {
               loading="lazy"
             />
           </motion.div>
+
+          {/* 2 Buttons below the building */}
+          <motion.div
+            className="building-actions-row"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.85, ease: EASE, delay: 0.2 }}
+          >
+            <Link to="/apartment-amenities" className="building-action-btn">
+              Apartment & Amenities
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg>
+            </Link>
+
+            <Link to="/availability" className="building-action-btn">
+              Availability
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" />
+              </svg>
+            </Link>
+          </motion.div>
         </div>
       </section>
     </>

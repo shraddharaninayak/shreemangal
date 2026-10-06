@@ -110,7 +110,7 @@ export default function CTASection() {
           transition={{ duration: 0.85, ease: EASE, delay: 0.46 }}
         >
           Explore Shree Mangal Group and discover spaces designed for living,
-          working and belonging — built with care in Nashik since 1996.
+          working and belonging built with care in Nashik since 1996.
         </motion.p>
 
         {/* Buttons */}
