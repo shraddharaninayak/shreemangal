@@ -96,6 +96,8 @@ function ResHero() {
         <img
           src="/images/smg_residence_hero.png"
           alt="Shree Mangal Group luxury residence interior"
+          loading="eager"
+          fetchpriority="high"
           style={{
             width: '100%',
             height: '100%',

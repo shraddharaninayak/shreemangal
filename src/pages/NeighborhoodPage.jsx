@@ -67,6 +67,8 @@ function NeighborhoodHero() {
         <img
           src="/images/smg_09-SHREE-SWASTIK-MANGAL-VIEW-4-1-1.png"
           alt="Shree Mangal neighborhood skyline and surroundings"
+          loading="eager"
+          fetchpriority="high"
           style={{
             width: '100%',
             height: '100%',

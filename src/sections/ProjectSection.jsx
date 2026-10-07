@@ -152,6 +152,8 @@ export default function ProjectSection() {
               src="/images/smg_building_isolated.png"
               alt="Shree Mangal architectural modern building design and reflection"
               className="building-showcase-img"
+              width="1200"
+              height="900"
               loading="lazy"
             />
           </motion.div>

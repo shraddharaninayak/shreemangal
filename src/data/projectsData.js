@@ -51,7 +51,7 @@ export const SHREE_MANGAL_PROJECTS = [
     year: 'Exclusive Estates',
     status: 'Private Residences',
     image: '/images/smg_aadiva_bungalow_hero.jpg',
-    heroImage: '/images/smg_gallerry_the1.jpg',
+    heroImage: '/images/smg_gallerry_the1.png',
     summary: 'Contemporary private bungalow living featuring expansive landscaped greens and custom villa architecture.',
     description: 'Aadiva Bungalow celebrates serene exclusivity, generous outdoor connections, and custom-crafted architecture for families who desire an elevated, individual residential address.',
     highlights: ['Private Landscaped Lawns', 'Double-Height Living Volumes', 'Exclusive Low-Density Enclave', 'Refined Materials & Stone Accents'],

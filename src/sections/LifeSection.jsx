@@ -21,14 +21,14 @@ const MOMENTS = [
   {
     key: 'garden',
     caption: 'OPEN SPACES',
-    src: '/images/smg_09-SHREE-SWASTIK-MANGAL-VIEW-4-1-1.jpg',
+    src: '/images/smg_09-SHREE-SWASTIK-MANGAL-VIEW-4-1-1.png',
     alt: 'Aerial view of Shree Swastik Mangal rooftop gardens and open terraces',
     pos: 'center center',
   },
   {
     key: 'evening',
     caption: 'EVENING GLOW',
-    src: '/images/smg_kyriad_hotel_hero.jpg',
+    src: '/images/smg_kyriad_hotel_hero.png',
     alt: 'Rooftop pool with city skyline at sunset',
     pos: 'center top',
   },
@@ -49,6 +49,8 @@ function MomentCard({ moment, delay }) {
       <img
         src={moment.src}
         alt={moment.alt}
+        width="1200"
+        height="380"
         style={{
           width: '100%',
           height: 'clamp(220px, 28vw, 380px)',

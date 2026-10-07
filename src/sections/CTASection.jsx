@@ -26,6 +26,8 @@ export default function CTASection() {
         src="/images/smg_gallerry-the3.jpg"
         alt=""
         aria-hidden="true"
+        width="1920"
+        height="1080"
         style={{
           position: 'absolute', inset: 0, zIndex: 0,
           width: '100%', height: '100%',

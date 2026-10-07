@@ -521,7 +521,7 @@ function CascadingPhotoCard({ item, index, total, step, scrollProgress }) {
           alt={item.alt}
           className="explore-photo-img"
           style={{ objectPosition: item.pos }}
-          loading={index === 0 ? 'eager' : 'lazy'}
+          loading="eager"
           draggable="false"
         />
         {/* Subtle photo glass surface shine */}

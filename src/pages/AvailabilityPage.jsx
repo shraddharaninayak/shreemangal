@@ -76,8 +76,10 @@ export default function AvailabilityPage() {
           style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
         >
           <img
-            src="/images/smg_swastik_mangal_clean.jpg"
+            src="/images/smg_swastik_mangal_clean.png"
             alt="Shree Mangal luxury residence availability"
+            loading="eager"
+            fetchpriority="high"
             style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 35%', display: 'block' }}
           />
         </motion.div>

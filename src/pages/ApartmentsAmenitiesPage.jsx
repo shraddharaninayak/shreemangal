@@ -86,6 +86,8 @@ function AmenitiesHero() {
         <img
           src="/images/amenities_source_1.png"
           alt="Shree Mangal luxury residence living room and sunset terrace"
+          loading="eager"
+          fetchpriority="high"
           style={{
             width: '100%',
             height: '100%',
