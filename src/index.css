@@ -2178,6 +2178,14 @@ body {
   box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.1);
 }
 
+.res-intro-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 80% center;
+  display: block;
+}
+
 .res-intro-text {
   display: flex;
   flex-direction: column;
@@ -2305,40 +2313,82 @@ body {
 /* ── Specifications ───────────────────────────────────────── */
 
 .res-specs-section {
-  background: #262825;
+  position: relative;
+  background: #12161C;
   padding: clamp(80px, 11vh, 130px) clamp(24px, 5.5vw, 84px);
   overflow: hidden;
+}
+
+.res-specs-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.res-specs-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(12, 16, 22, 0.60) 0%,
+    rgba(12, 16, 22, 0.46) 50%,
+    rgba(12, 16, 22, 0.36) 100%
+  );
+}
+
+.res-specs-section .section-heading.is-dark-theme {
+  color: #FFFFFF;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.75);
+}
+
+.res-specs-section .section-heading .heading-accent {
+  color: #D6B58F;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.75);
+}
+
+.res-specs-section .res-eyebrow {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75);
 }
 
 .res-specs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(14, 18, 24, 0.30);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .res-spec-item {
   padding: clamp(24px, 3vh, 36px) clamp(20px, 2.5vw, 36px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  transition: background 0.3s ease;
+}
+
+.res-spec-item:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .res-spec-label {
   font-size: 9.5px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.28);
+  color: #D6B58F;
   margin: 0 0 8px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
 }
 
 .res-spec-value {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: clamp(15px, 1.3vw, 19px);
-  font-weight: 500;
-  color: #FAF8F5;
+  font-weight: 550;
+  color: #FFFFFF;
   margin: 0;
   line-height: 1.35;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
 }
 
 /* ── Gallery ──────────────────────────────────────────────── */
@@ -4037,7 +4087,12 @@ body {
 .story-break-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(14, 18, 24, 0.92) 0%, rgba(14, 18, 24, 0.78) 55%, rgba(14, 18, 24, 0.55) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(10, 14, 20, 0.68) 0%,
+    rgba(10, 14, 20, 0.52) 50%,
+    rgba(10, 14, 20, 0.40) 100%
+  );
   z-index: 1;
 }
 
@@ -4052,9 +4107,10 @@ body {
   font-weight: 600;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #B99A76;
+  color: #E2C39B;
   margin-bottom: 20px;
   display: block;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.8);
 }
 
 .story-break-h2 {
@@ -4065,14 +4121,16 @@ body {
   letter-spacing: -0.02em;
   color: #FFFFFF;
   margin: 0 0 20px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.85);
 }
 
 .story-break-desc {
   font-size: clamp(14px, 1.05vw, 16.5px);
   line-height: 1.76;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.92);
   margin: 0 auto;
   max-width: 620px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.85);
 }
 
 /* ── 5. Our Team Section ─────────────────────────────────────────────────── */

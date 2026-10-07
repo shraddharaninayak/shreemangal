@@ -131,7 +131,7 @@ export default function AboutSection() {
               transition={{ duration: 1.1, ease: EASE, delay: 0.75 }}
             >
               <img
-                src="/images/smg_swastik_mangal_clean.jpg"
+                src="/images/smg_swastik_mangal_clean.png"
                 alt="Shree Swastik Mangal glazed modern residential tower"
                 className="about-photo-img"
               />

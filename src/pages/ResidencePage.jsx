@@ -94,7 +94,7 @@ function ResHero() {
         style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
       >
         <img
-          src="/images/smg_residence_hero.jpg"
+          src="/images/smg_residence_hero.png"
           alt="Shree Mangal Group luxury residence interior"
           style={{
             width: '100%',
@@ -181,9 +181,15 @@ function ResIntro() {
           transition={{ duration: 1.1, ease: EASE }}
         >
           <img
-            src="/images/smg_residence_img7.jpg"
-            alt="Shree Mangal residence interior"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            src="/images/smg_residence_img7.png"
+            alt="Shree Mangal residence interior and skyline views"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: '80% center',
+              display: 'block',
+            }}
           />
         </motion.div>
 
@@ -332,7 +338,23 @@ function ResSpecs() {
   const inView = useInView(ref, { once: true, amount: 0.12 })
   return (
     <section className="res-specs-section">
-      <div ref={ref} style={{ maxWidth: '1340px', margin: '0 auto' }}>
+      {/* Background Image Container */}
+      <div className="res-specs-bg">
+        <img
+          src="/images/smg_residence_specs_bg.jpg"
+          alt="Shree Mangal luxury residence interior specifications"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center 40%',
+            display: 'block',
+          }}
+        />
+        <div className="res-specs-overlay" />
+      </div>
+
+      <div ref={ref} style={{ maxWidth: '1340px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}

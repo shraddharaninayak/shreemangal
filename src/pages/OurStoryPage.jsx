@@ -139,7 +139,7 @@ function StoryHero() {
         style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}
       >
         <img
-          src="/images/smg_aadiva_bungalow_hero.jpg"
+          src="/images/smg_aadiva_bungalow_hero.png"
           alt="Shree Mangal Group architectural excellence"
           style={{
             width: '100%',
@@ -354,12 +354,13 @@ function StoryVisualBreak() {
     <section className="story-break-section">
       <div className="story-break-bg">
         <img
-          src="/images/smg_swastik_view.jpg"
-          alt="Shree Mangal architectural panoramic showcase"
+          src="/images/smg_story_philosophy_bg.png"
+          alt="Shree Mangal architectural landmark and illuminated rooftop living"
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
+            objectPosition: 'center 50%',
             display: 'block',
           }}
         />
