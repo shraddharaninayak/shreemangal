@@ -90,7 +90,7 @@ export default function ProjectSection() {
                           src={project.image}
                           alt={project.name}
                           className="project-card-img"
-                          loading="lazy"
+                          loading={index < 3 ? 'eager' : 'lazy'}
                         />
 
                         {/* Badges on Top of Card */}

@@ -86,9 +86,6 @@ export default function PerspectiveSection() {
       // progress = 1 when section bottom hits viewport bottom
       const p = Math.max(0, Math.min(1, -rect.top / scrollable))
 
-      // DEBUG — open browser console to verify progress is moving:
-      console.log('[Perspective] scroll progress:', p.toFixed(4))
-
       scrollProgress.set(p)
 
       // Update caption/counter at the midpoint of each wipe transition

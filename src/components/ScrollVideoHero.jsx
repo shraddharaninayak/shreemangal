@@ -117,17 +117,21 @@ export default function ScrollVideoHero() {
         }
         // RAF stops here; next scroll event will restart it.
       } else {
-        // Desktop: lerp for extra smoothness — preserves original behaviour.
-        const diff = targetTime - video.currentTime
-        if (Math.abs(diff) < 0.001) {
-          if (video.currentTime !== targetTime) video.currentTime = targetTime
-          // Settled — let RAF stop.
-        } else {
-          const next = video.currentTime + diff * 0.5
-          if (Math.abs(next - lastApplied) > 0.01) {
-            video.currentTime = next
-            lastApplied = next
+        // Desktop: lerp for extra smoothness.
+        // Use lastApplied (not video.currentTime) as the lerp reference — stable
+        // regardless of when the browser reflects the async seek in currentTime.
+        const current = lastApplied >= 0 ? lastApplied : 0
+        const diff = targetTime - current
+        if (Math.abs(diff) < 1 / 30) {
+          // Within one frame of target — snap and stop.
+          if (lastApplied !== targetTime) {
+            video.currentTime = targetTime
+            lastApplied = targetTime
           }
+        } else {
+          const next = current + diff * 0.5
+          video.currentTime = next
+          lastApplied = next
           // Still converging — keep RAF running.
           rafScheduled = true
           rafRef.current = requestAnimationFrame(tick)
@@ -177,10 +181,11 @@ export default function ScrollVideoHero() {
         {/* ── Full-cover video ────────────────────────────────────────────── */}
         <video
           ref={videoRef}
-          src="/videos/shreemangal-hero-scrub.mp4"
+          src="/videos/shreemangal-hero-web.mp4"
+          poster="/images/hero-poster.jpg"
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
         />
 
         {/* ── Gradient scrim (left-side contrast only) ────────────────────── */}
