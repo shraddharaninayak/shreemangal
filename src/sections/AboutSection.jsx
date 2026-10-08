@@ -162,14 +162,28 @@ export default function AboutSection() {
               </motion.p>
             </div>
 
-            {/* Explore button placed below the description */}
+            {/* Action buttons placed below the description */}
             <motion.div
+              className="about-btn-group"
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: EASE, delay: 1.05 }}
             >
               <Link to="/residences" className="about-explore-btn">
-                Explore
+                <span>EXPLORE RESIDENCE</span>
+                <svg
+                  className="about-explore-arrow"
+                  width="14" height="14" viewBox="0 0 14 14"
+                  fill="none" stroke="currentColor" strokeWidth="1.5"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M2 7h10M8 3l4 4-4 4" />
+                </svg>
+              </Link>
+
+              <Link to="/our-services" className="about-explore-btn">
+                <span>OUR SERVICES</span>
                 <svg
                   className="about-explore-arrow"
                   width="14" height="14" viewBox="0 0 14 14"

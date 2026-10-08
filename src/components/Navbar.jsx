@@ -7,32 +7,13 @@ import { motion, AnimatePresence } from 'framer-motion'
 const NAV_ITEMS = [
   { id: 'home', label: 'Home', href: '/' },
   {
-    id: 'about',
-    label: 'About',
-    scrollTo: 'about', // clicking the label scrolls to #about on homepage
-    children: [
-      { label: 'Our Story', href: '/our-story' },
-      { label: 'Residence', href: '/residences' },
-    ],
-  },
-  {
     id: 'properties',
     label: 'Properties',
     href: '/properties',
     children: [
+      { label: 'Neighborhood', href: '/neighborhood' },
       { label: 'Apartments & Amenities', href: '/apartment-amenities' },
       { label: 'Availability', href: '/availability' },
-      { label: 'Neighborhood', href: '/neighborhood' },
-    ],
-  },
-  {
-    id: 'hospitality',
-    label: 'Hospitality',
-    href: '/hospitality',
-    children: [
-      { label: 'Hotels', href: '/hospitality/hotels' },
-      { label: 'Service Apartments', href: '/hospitality/service-apartments' },
-      { label: 'Hospitality Experience', href: '/hospitality/experience' },
     ],
   },
   {
@@ -40,9 +21,9 @@ const NAV_ITEMS = [
     label: 'Insights',
     href: '/insights',
     children: [
-      { label: 'Blog', href: '/insights/blog' },
-      { label: 'News', href: '/insights/news' },
-      { label: 'Updates', href: '/insights/updates' },
+      { label: 'Our Team', href: '/our-team' },
+      { label: 'Gallery', href: '/gallery' },
+      { label: 'Blog', href: '/blog' },
     ],
   },
   { id: 'contact', label: 'Contact Us', href: '/contact' },

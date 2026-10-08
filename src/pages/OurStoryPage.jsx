@@ -142,7 +142,7 @@ function StoryHero() {
           src="/images/smg_aadiva_bungalow_hero.png"
           alt="Shree Mangal Group architectural excellence"
           loading="eager"
-          fetchpriority="high"
+          fetchPriority="high"
           style={{
             width: '100%',
             height: '100%',

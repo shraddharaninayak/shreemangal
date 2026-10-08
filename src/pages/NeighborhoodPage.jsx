@@ -7,23 +7,6 @@ const EASE = [0.16, 1, 0.3, 1]
 
 // ── Shared Animation Wrappers ─────────────────────────────────────────────────
 
-function FadeUp({ children, delay = 0, style, className }) {
-  const ref = useRef(null)
-  const inView = useInView(ref, { once: true, amount: 0.15 })
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.9, ease: EASE, delay }}
-      style={style}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
 function RevealImage({ src, alt, className, style, delay = 0 }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, amount: 0.12 })
@@ -68,7 +51,7 @@ function NeighborhoodHero() {
           src="/images/smg_09-SHREE-SWASTIK-MANGAL-VIEW-4-1-1.png"
           alt="Shree Mangal neighborhood skyline and surroundings"
           loading="eager"
-          fetchpriority="high"
+          fetchPriority="high"
           style={{
             width: '100%',
             height: '100%',
@@ -335,7 +318,7 @@ function EditorialShowcases() {
       <div className="neighborhood-container">
 
         {/* ── Feature 1: Dining & Nightlife (Text Left, Image Right) ── */}
-        <div className="neighborhood-row row-normal">
+        <div className="neighborhood-row row-normal neighborhood-dining-row">
           <div className="neighborhood-row-text-col">
             <span className="neighborhood-feature-tag">LOCAL SCENE</span>
             <h3 className="neighborhood-row-title">
